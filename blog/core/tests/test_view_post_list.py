@@ -1,9 +1,10 @@
 from django.test import TestCase
+from django.shortcuts import resolve_url as r
 
 
 class BlogPostListTest(TestCase):
     def setUp(self):
-        self.resp = self.client.get('/blog')
+        self.resp = self.client.get(r('blog'))
 
     def test_get(self):
         """GET /blog should return status code 200"""
