@@ -1,24 +1,15 @@
-from django.test import TestCase
-from blog.core.models import Post
+from datetime import datetime
+
 from django.shortcuts import resolve_url as r
+from django.test import TestCase
+
+from blog.core.models import Post
+
+from django.contrib.auth.models import User
 
 
 class HomeTest(TestCase):
     def setUp(self):
-        Post.objects.create(title='Title',
-                            slug='title',
-                            content='Content')
-
-        obj = Post.objects.create(
-            title='Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.',
-            slug='proin-gravida-nibh',
-            content='Content',
-        )
-        obj2 = Post.objects.create(
-            title='Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed.',
-            slug='nemo-enim-ipsam',
-            content='Content',
-        )
         self.content = """
             Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.
             Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Nam nec tellus a odio tincidunt auctor a ornare odio.
@@ -29,12 +20,27 @@ class HomeTest(TestCase):
             At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium. Proin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit.
             Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit. Duis sed odio sit amet nibh vulputate cursus a sit amet mauris. Morbi accumsan ipsum velit.
         """
+
         Post.objects.create(title='Title',
-                            slug='title-2',
+                            slug='title4',
                             content=self.content)
 
-        obj.authors.create(username='john', first_name='John', last_name='Doe')
-        obj2.authors.create(username='john2', first_name='John', last_name='Doe')
+        self.obj = Post.objects.create(title='Title',
+                                       slug='title',
+                                       content='Content')
+
+        self.obj2 = Post.objects.create(title='Title',
+                                        slug='title2',
+                                        content='Content')
+
+        self.obj3 = Post.objects.create(title='Title',
+                                        slug='title3',
+                                        content='Content')
+
+        author = User.objects.create(username='john', first_name='John', last_name='Doe')
+        self.obj.authors.add(author)
+        self.obj2.authors.add(author)
+        self.obj3.authors.add(author)
 
         self.resp = self.client.get(r('home'))
 
@@ -57,25 +63,29 @@ class HomeTest(TestCase):
         self.assertEqual(len(self.resp.context['posts']), 3)
 
     def test_html(self):
+        date = datetime.utcnow()
+        date = date.strftime('%b %d, %Y')
+        date = date.lower()
         contents = [
-            (1, 'Proin gravida nibh vel velit auctor aliquet Aenean sollicitudin auctor.'),
-            (1, 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit sed.'),
-            (2, 'John Doe')
+            (3, 'Title'),
+            (3, 'John Doe'),
+            (3, date),
         ]
 
         for count, expected in contents:
             with self.subTest():
                 self.assertContains(self.resp, expected, count)
 
-    # def test_html_date_format(self):
-    #     """Should show created_at datetime formatted as 'Month DD, YYYY'"""
-    #     data = datetime.utcnow()
-    #     data = data.strftime('%b %d, %Y').upper()
-    #     self.assertContains(self.resp, data, 2)
-
     def test_content_slice(self):
         """Should show only 400 characters in home"""
         self.assertNotContains(self.resp, self.content[400:])
 
     def test_post_detail_link(self):
-        self.assertContains(self.resp, 'href="/post/proin-gravida-nibh"', 3)
+        contents = [
+            r('post-detail', 'title'),
+            r('post-detail', 'title2'),
+            r('post-detail', 'title3'),
+        ]
+        for expected in contents:
+            with self.subTest():
+                self.assertContains(self.resp, 'href="{}"'.format(expected))

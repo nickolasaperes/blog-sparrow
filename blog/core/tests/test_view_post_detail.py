@@ -1,6 +1,9 @@
-from django.test import TestCase
-from blog.core.models import Post
+from datetime import datetime
+
 from django.shortcuts import resolve_url as r
+from django.test import TestCase
+
+from blog.core.models import Post
 
 
 class PostDetailTest(TestCase):
@@ -23,10 +26,13 @@ class PostDetailTest(TestCase):
         self.assertIsInstance(post, Post)
 
     def test_html(self):
+        date = datetime.utcnow()
+        date = date.strftime('%b %d, %Y')
         contents = [
             'Title',
             'content',
             'John Doe',
+            date.lower()
         ]
 
         for expected in contents:
