@@ -191,7 +191,7 @@
          </div>
 
          <div class="ten columns offset-2 post-content">
-            <p>{{ post.content|slice:"0:400" }}
+            <p>{{ post.content|striptags|safe|slice:"0:400" }}
             <a class="more-link" href="{% url 'post-detail' slug=post.slug %}">Read More<i class="fa fa-arrow-circle-o-right"></i></a></p>
          </div>
 

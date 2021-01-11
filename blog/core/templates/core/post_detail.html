@@ -38,26 +38,31 @@
               <p class="post-meta">
 
                  <time class="date" datetime="2014-01-14T11:24">{{ post.created_at|date:'b d, Y' }}</time>
-                 /
-                 <span class="categories">
-                 <a href="#">Design</a> /
-                 <a href="#">User Inferface</a> /
-                 <a href="#">Web Design</a>
-                 </span>
+                <span class="categories">
+                  {% for category in post.categories.all %}
+                  / <a href="#">{{ category }}</a>
+                  {% endfor %}
+                </span>
 
               </p>
 
            </div>
 
-           <div class="post-thumb">
-              <img src="images/post-image/post-image-1300x500-01.jpg" alt="post-image" title="post-image">
-           </div>
+            {% if post.thumb %}
+            <div class="post-thumb">
+                <img src="{{ post.thumb.url }}" alt="post-image" title="post-image">
+            </div>
+            {% endif %}
 
            <div class="post-content">
-                {{ post.content }}
+                {{ post.content|safe }}
                 <p class="tags">
                 <span>Tagged in </span>:
-                    <a href="#">orci</a>, <a href="#">lectus</a>, <a href="#">varius</a>, <a href="#">turpis</a>
+                    {% for tag in post.tags.all %}
+                    <a href="#">{{ tag }}</a>
+                    {% empty %}
+                    No tags
+                    {% endfor %}
                 </p>
 
                 {% for author in post.authors.all %}
@@ -95,14 +100,6 @@
               </form>
            </div>
 
-           <div class="widget widget_text">
-              <h5 class="widget-title">Text Widget</h5>
-              <div class="textwidget">Proin gravida nibh vel velit auctor aliquet.
-              Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum,
-              nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate cursus
-              a sit amet mauris. Morbi accumsan ipsum velit. </div>
-             </div>
-
            <div class="widget widget_categories">
               <h5 class="widget-title">Categories</h5>
               <ul class="link-list cf">
@@ -125,20 +122,6 @@
                  <a href="#">wordpress</a>
               </div>
            </div>
-
-           <div class="widget widget_photostream">
-              <h5>Photostream</h5>
-              <ul class="photostream cf">
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-                 <li><a href="#"><img src="images/thumb.jpg" alt="thumbnail"></a></li>
-              </ul>
-            </div>
 
         </aside> <!-- Sidebar End -->
 

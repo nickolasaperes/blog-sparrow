@@ -1,5 +1,6 @@
-from django.db import models
+from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class Category(models.Model):
@@ -25,7 +26,8 @@ class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField()
     authors = models.ManyToManyField(User)
-    content = models.TextField()
+    thumb = models.ImageField()
+    content = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField('Category')
     tags = models.ManyToManyField('Tag')
