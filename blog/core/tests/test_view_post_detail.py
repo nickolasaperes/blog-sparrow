@@ -3,7 +3,7 @@ from datetime import datetime
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
-from blog.core.models import Post
+from blog.core.models import Post, Category, Tag
 
 
 class PostDetailTest(TestCase):
@@ -13,8 +13,27 @@ class PostDetailTest(TestCase):
                                         content='content')
 
         self.post.authors.create(username='john', first_name='John', last_name='Doe')
-        self.post.categories.create(title='Category')
-        self.post.tags.create(title='Django')
+        c = self.post.categories.create(title='Category1')
+        t = self.post.tags.create(title='Tag1')
+
+        self.categories = [
+            c,
+            Category.objects.create(title='Category2'),
+            Category.objects.create(title='Category3'),
+            Category.objects.create(title='Category4'),
+            Category.objects.create(title='Category5'),
+            Category.objects.create(title='Category6'),
+            Category.objects.create(title='Category7'),
+            Category.objects.create(title='Category8'),
+        ]
+
+        self.tags = [
+            t,
+            Tag.objects.create(title='Tag2'),
+            Tag.objects.create(title='Tag3'),
+            Tag.objects.create(title='Tag4'),
+            Tag.objects.create(title='Tag5'),
+        ]
 
         self.resp = self.client.get(r('post-detail', slug='title'))
 
@@ -25,8 +44,9 @@ class PostDetailTest(TestCase):
         self.assertTemplateUsed(self.resp, 'core/post_detail.html')
 
     def test_context(self):
-        post = self.resp.context['post']
-        self.assertIsInstance(post, Post)
+        keys = ['post', 'categories', 'tags']
+        for expected in keys:
+            self.assertIn(expected, self.resp.context)
 
     def test_html(self):
         date = datetime.utcnow()
@@ -35,12 +55,24 @@ class PostDetailTest(TestCase):
             'Title',
             'content',
             'John Doe',
-            'Category',
-            'Django',
+            'Category1',
+            'Tag1',
             date.lower(),
         ]
 
         for expected in contents:
+            with self.subTest():
+                self.assertContains(self.resp, expected)
+
+    def test_categories(self):
+        """Should show top 8 categories(categories with more posts) in view"""
+        for expected in self.categories:
+            with self.subTest():
+                self.assertContains(self.resp, expected)
+
+    def test_tags(self):
+        """Should show top 5 tags"""
+        for expected in self.tags:
             with self.subTest():
                 self.assertContains(self.resp, expected)
 

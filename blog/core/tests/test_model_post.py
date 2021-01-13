@@ -1,5 +1,8 @@
-from django.test import TestCase
 from datetime import datetime
+
+from django.shortcuts import resolve_url as r
+from django.test import TestCase
+
 from blog.core.models import Post
 
 
@@ -29,3 +32,9 @@ class ModelPostTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Title', str(self.obj))
+
+    def test_absolute_url(self):
+        self.assertEqual(self.obj.get_absolute_url(), r('post-detail', slug='title'))
+
+    def test_ordering(self):
+        self.assertEqual(['-created_at'], Post._meta.ordering)

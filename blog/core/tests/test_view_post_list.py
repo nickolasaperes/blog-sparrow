@@ -1,5 +1,5 @@
-from django.test import TestCase
 from django.shortcuts import resolve_url as r
+from django.test import TestCase
 
 
 class BlogPostListTest(TestCase):
@@ -15,3 +15,13 @@ class BlogPostListTest(TestCase):
 
     def test_home_link(self):
         self.assertContains(self.resp, 'href="/"')
+
+    def test_context(self):
+        self.assertIn('page_obj', self.resp.context)
+
+    def test_quantity_page(self):
+        """Should has 3 posts per page"""
+        self.assertEqual(self.resp.context['page_obj'].paginator.per_page, 3)
+
+    def test_get_page(self):
+        pass
