@@ -11,7 +11,10 @@ class PostDetailTest(TestCase):
         self.post = Post.objects.create(title='Title',
                                         slug='title',
                                         content='content')
+
         self.post.authors.create(username='john', first_name='John', last_name='Doe')
+        self.post.categories.create(title='Category')
+        self.post.tags.create(title='Django')
 
         self.resp = self.client.get(r('post-detail', slug='title'))
 
@@ -32,7 +35,9 @@ class PostDetailTest(TestCase):
             'Title',
             'content',
             'John Doe',
-            date.lower()
+            'Category',
+            'Django',
+            date.lower(),
         ]
 
         for expected in contents:
