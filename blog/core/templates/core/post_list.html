@@ -63,10 +63,13 @@
            </div>
 
         </article> <!-- post end -->
+        {% empty %}
+         <center>Sorry, we do not have any posts yet!</center>
         {% endfor %}
 
         <!-- Pagination -->
         <nav class="col full pagination">
+              {% if page_obj %}
               <ul>
                  {% if page_obj.has_previous %}
                  <li>
@@ -86,7 +89,7 @@
                   </li>
                   {% endif %}
               </ul>
-
+              {% endif %}
           </nav>
 
      </div> <!-- Primary End-->
@@ -110,6 +113,8 @@
               <ul class="link-list cf">
                   {% for category in categories %}
                     <li>{{ category }}</li>
+                  {% empty %}
+                    No categories found.
                   {% endfor %}
               </ul>
            </div>
@@ -119,6 +124,8 @@
               <div class="tagcloud cf">
                   {% for tag in tags %}
                      <a href="#">{{ tag }}</a>
+                  {% empty %}
+                     <span style="margin-left: 15px;">No tags found.</span>
                   {% endfor %}
               </div>
            </div>
