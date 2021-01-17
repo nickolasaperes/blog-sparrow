@@ -67,37 +67,25 @@
 
         <!-- Pagination -->
         <nav class="col full pagination">
-<!--              <ul>-->
-<!--              <li><span class="page-numbers prev inactive">Prev</span></li>-->
-<!--                  <li><span class="page-numbers current">1</span></li>-->
-<!--                  <li><a href="#" class="page-numbers">2</a></li>-->
-<!--              <li><a href="#" class="page-numbers">3</a></li>-->
-<!--              <li><a href="#" class="page-numbers">4</a></li>-->
-<!--              <li><a href="#" class="page-numbers">5</a></li>-->
-<!--              <li><a href="#" class="page-numbers">6</a></li>-->
-<!--              <li><a href="#" class="page-numbers">7</a></li>-->
-<!--              <li><a href="#" class="page-numbers">8</a></li>-->
-<!--              <li><a href="#" class="page-numbers">9</a></li>-->
-<!--                  <li><a href="#" class="page-numbers next">Next</a></li>-->
-<!--              </ul>-->
-
-            <div class="pagination">
-               <span class="step-links">
+              <ul>
                  {% if page_obj.has_previous %}
-                     <a href="?page=1">&laquo; first</a>
-                     <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+                 <li>
+                     <a href="?page=1" class="page-numbers">&laquo; First</a>
+                 </li>
                  {% endif %}
 
-                 <span class="current">
-                     Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                 </span>
+                 {% for page in page_obj.paginator.page_range %}
+                 <li>
+                     <a href="?page={{ page }}" class="page-numbers {% if page == page_obj.number %} current{% endif %}">{{ page }}</a>
+                 </li>
+                 {% endfor %}
 
-                 {% if page_obj.has_next %}
-                     <a href="?page={{ page_obj.next_page_number }}">next</a>
-                     <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-                 {% endif %}
-               </span>
-            </div>
+                  {% if page_obj.has_next %}
+                  <li>
+                      <a href="?page={{ page_obj.paginator.num_pages }}" class="page-numbers">Last &raquo;</a>
+                  </li>
+                  {% endif %}
+              </ul>
 
           </nav>
 
@@ -120,23 +108,18 @@
            <div class="widget widget_categories">
               <h5 class="widget-title">Categories</h5>
               <ul class="link-list cf">
-                 <li><a href="#">Designs</a></li>
-                 <li><a href="#">Internet</a></li>
-                 <li><a href="#">Typography</a></li>
-                 <li><a href="#">Photography</a></li>
-                 <li><a href="#">Web Development</a></li>
-                 <li><a href="#">Projects</a></li>
-                 <li><a href="#">Other Stuff</a></li>
+                  {% for category in categories %}
+                    <li>{{ category }}</li>
+                  {% endfor %}
               </ul>
            </div>
 
            <div class="widget widget_tag_cloud">
               <h5 class="widget-title">Tags</h5>
               <div class="tagcloud cf">
-                 <a href="#">drupal</a>
-                 <a href="#">joomla</a>
-                 <a href="#">ghost</a>
-                 <a href="#">wordpress</a>
+                  {% for tag in tags %}
+                     <a href="#">{{ tag }}</a>
+                  {% endfor %}
               </div>
            </div>
 

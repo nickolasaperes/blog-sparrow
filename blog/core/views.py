@@ -16,7 +16,10 @@ def post_list(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'core/post_list.html', {'page_obj': page_obj})
+    categories = Category.objects.top_eight()
+    tags = Tag.objects.top_five()
+
+    return render(request, 'core/post_list.html', {'page_obj': page_obj,  'categories': categories, 'tags': tags})
 
 
 def post_detail(request, slug):

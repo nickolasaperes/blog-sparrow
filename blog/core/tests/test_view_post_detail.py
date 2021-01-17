@@ -15,6 +15,7 @@ class PostDetailTest(TestCase):
         self.post.authors.create(username='john', first_name='John', last_name='Doe')
         c = self.post.categories.create(title='Category1')
         t = self.post.tags.create(title='Tag1')
+        t2 = self.post.tags.create(title='Tag2')
 
         self.categories = [
             c,
@@ -29,7 +30,7 @@ class PostDetailTest(TestCase):
 
         self.tags = [
             t,
-            Tag.objects.create(title='Tag2'),
+            t2,
             Tag.objects.create(title='Tag3'),
             Tag.objects.create(title='Tag4'),
             Tag.objects.create(title='Tag5'),
@@ -56,7 +57,6 @@ class PostDetailTest(TestCase):
             'content',
             'John Doe',
             'Category1',
-            'Tag1',
             date.lower(),
         ]
 
@@ -64,13 +64,17 @@ class PostDetailTest(TestCase):
             with self.subTest():
                 self.assertContains(self.resp, expected)
 
-    def test_categories(self):
+    def test_tags(self):
+        expected = ', '.join(map(lambda x: str(x), self.post.tags.all()))
+        self.assertContains(self.resp, expected)
+
+    def test_sidebar_categories(self):
         """Should show top 8 categories(categories with more posts) in view"""
         for expected in self.categories:
             with self.subTest():
                 self.assertContains(self.resp, expected)
 
-    def test_tags(self):
+    def test_sidebar_tags(self):
         """Should show top 5 tags"""
         for expected in self.tags:
             with self.subTest():
@@ -82,3 +86,4 @@ class PostNotFoundTest(TestCase):
         """Should return 404 when raises post DoesNotExist"""
         resp = self.client.get(r('post-detail', slug='not-found'))
         self.assertEqual(resp.status_code, 404)
+
