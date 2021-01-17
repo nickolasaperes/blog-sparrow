@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.shortcuts import resolve_url as r
 
-from blog.core.managers import CategoryManager, TagManager
+from blog.core.managers import CategoryManager, TagManager, PostManager
 
 
 class Category(models.Model):
@@ -38,6 +38,8 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField('Category')
     tags = models.ManyToManyField('Tag')
+
+    objects = PostManager()
 
     class Meta:
         ordering = ['-created_at']

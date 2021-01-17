@@ -8,8 +8,16 @@ from blog.core.models import Post, Category, Tag
 
 class PostDetailTest(TestCase):
     def setUp(self):
+        self.previous = Post.objects.create(title='Title2',
+                                            slug='title2',
+                                            content='content')
+
         self.post = Post.objects.create(title='Title',
                                         slug='title',
+                                        content='content')
+
+        self.next = Post.objects.create(title='Title3',
+                                        slug='title3',
                                         content='content')
 
         self.post.authors.create(username='john', first_name='John', last_name='Doe')
@@ -45,7 +53,7 @@ class PostDetailTest(TestCase):
         self.assertTemplateUsed(self.resp, 'core/post_detail.html')
 
     def test_context(self):
-        keys = ['post', 'categories', 'tags']
+        keys = ['post', 'categories', 'tags', 'previous', 'next']
         for expected in keys:
             self.assertIn(expected, self.resp.context)
 
@@ -79,6 +87,12 @@ class PostDetailTest(TestCase):
         for expected in self.tags:
             with self.subTest():
                 self.assertContains(self.resp, expected)
+
+    def test_previous_post(self):
+        self.assertContains(self.resp, str(self.previous))
+
+    def test_next_post(self):
+        self.assertContains(self.resp, str(self.next))
 
 
 class PostNotFoundTest(TestCase):

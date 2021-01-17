@@ -26,4 +26,9 @@ def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
     categories = Category.objects.top_eight()
     tags = Tag.objects.top_five()
-    return render(request, 'core/post_detail.html', {'post': post, 'categories': categories, 'tags': tags})
+
+    previous = Post.objects.previous(post)
+    next_ = Post.objects.next(post)
+
+    return render(request, 'core/post_detail.html', {'post': post, 'categories': categories, 'tags': tags,
+                                                     'previous': previous, 'next': next_})
