@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'test_without_migrations',
     'ckeditor',
+    'debug_toolbar',
     'blog.core',
 ]
 
@@ -53,6 +54,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'blog.urls'
@@ -126,3 +128,7 @@ STATIC_ROOT = str(BASE_DIR / 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = str(BASE_DIR / 'media')
+
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

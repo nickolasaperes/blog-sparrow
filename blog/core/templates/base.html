@@ -123,7 +123,7 @@
             </ul>
 
             <ul class="copyright">
-               <li>Copyright &copy; 2014 Sparrow</li>
+               <li id="copy">Copyright &copy;</li>
                <li>Design by <a href="http://www.styleshout.com/">Styleshout</a></li>
             </ul>
 
@@ -144,6 +144,11 @@
    <script src="{% static 'js/jquery.flexslider.js' %}"></script>
    <script src="{% static 'js/doubletaptogo.js' %}"></script>
    <script src="{% static 'js/init.js' %}"></script>
+
+   <script>
+      copyright = document.getElementById('copy')
+      copyright.textContent += ' ' + new Date().getFullYear() + ' Sparrow'
+   </script>
 
 </body>
 
