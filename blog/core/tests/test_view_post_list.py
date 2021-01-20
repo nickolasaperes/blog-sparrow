@@ -78,3 +78,21 @@ class BlogPostListTest(TestCase):
         for tag in self.tags:
             with self.subTest():
                 self.assertContains(self.resp, str(tag))
+
+
+class SearchTest(TestCase):
+    def setUp(self):
+        Post.objects.create(title='Title',
+                            slug='title',
+                            content='Content')
+        Post.objects.create(title='Title2',
+                            slug='title2',
+                            content='Content')
+
+        self.resp = self.client.get(r('blog'), {'q': 'Title2'})
+
+    def test_search(self):
+        self.assertQuerysetEqual(self.resp.context['page_obj'], ['Title2'], lambda x: x.title)
+
+    def test_persistent_query(self):
+        self.assertQuerysetEqual(self.resp.context['page_obj'].paginator.get_page(2), ['Title2'], lambda x: x.title)

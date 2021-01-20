@@ -10,9 +10,14 @@ def home(request):
 
 
 def post_list(request):
-    posts = Post.objects.all()
-    paginator = Paginator(posts, 3)
+    query = request.GET.get('q')
 
+    if query:
+        posts = Post.objects.filter(title__icontains=query)
+    else:
+        posts = Post.objects.all()
+
+    paginator = Paginator(posts, 3)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

@@ -94,10 +94,13 @@ class PostDetailTest(TestCase):
     def test_next_post(self):
         self.assertContains(self.resp, str(self.next))
 
+    def test_search_form(self):
+        """Should have a form with a search field and action to /blog"""
+        self.assertContains(self.resp, 'action="/blog"')
+
 
 class PostNotFoundTest(TestCase):
     def test_not_found(self):
         """Should return 404 when raises post DoesNotExist"""
         resp = self.client.get(r('post-detail', slug='not-found'))
         self.assertEqual(resp.status_code, 404)
-

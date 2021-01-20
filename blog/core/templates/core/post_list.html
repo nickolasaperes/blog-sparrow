@@ -73,19 +73,19 @@
               <ul>
                  {% if page_obj.has_previous %}
                  <li>
-                     <a href="?page=1" class="page-numbers">&laquo; First</a>
+                     <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-numbers">&laquo; First</a>
                  </li>
                  {% endif %}
 
                  {% for page in page_obj.paginator.page_range %}
                  <li>
-                     <a href="?page={{ page }}" class="page-numbers {% if page == page_obj.number %} current{% endif %}">{{ page }}</a>
+                     <a href="?page={{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-numbers {% if page == page_obj.number %} current{% endif %}">{{ page }}</a>
                  </li>
                  {% endfor %}
 
                   {% if page_obj.has_next %}
                   <li>
-                      <a href="?page={{ page_obj.paginator.num_pages }}" class="page-numbers">Last &raquo;</a>
+                      <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-numbers">Last &raquo;</a>
                   </li>
                   {% endif %}
               </ul>
@@ -100,11 +100,9 @@
 
            <div class="widget widget_search">
               <h5>Search</h5>
-              <form action="#">
-
-                 <input class="text-search" type="text" onfocus="if (this.value == 'Search here...') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Search here...'; }" value="Search here...">
+              <form method="GET" action="">
+                 <input class="text-search" name="q" type="text" onfocus="if (this.value == 'Search here...') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Search here...'; }" value="{% if request.GET.q %}{{ request.GET.q }}{% else %}Search here...{% endif %}">
                  <input type="submit" class="submit-search" value="">
-
               </form>
            </div>
 
