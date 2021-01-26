@@ -1,0 +1,33 @@
+<div id="secondary" class="four columns end">
+    <aside id="sidebar">
+        <div class="widget widget_search">
+            <h5>Search</h5>
+            <form method="GET" action="{% url 'blog' %}">
+                <input class="text-search" name="q" type="text" onfocus="if (this.value == 'Search here...') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Search here...'; }" value="{% if request.GET.q %}{{ request.GET.q }}{% else %}Search here...{% endif %}">
+                <input type="submit" class="submit-search" value="">
+            </form>
+        </div>
+        <div class="widget widget_categories">
+            <h5 class="widget-title">Categories</h5>
+            <ul class="link-list cf">
+                {% for category in categories %}
+                <li>
+                    <a href="{{ category.get_absolute_url }}">{{ category }}</a>
+                </li>
+                {% empty %}
+                No categories found.
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="widget widget_tag_cloud">
+        <h5 class="widget-title">Tags</h5>
+            <div class="tagcloud cf">
+                {% for tag in tags %}
+                <a href="#">{{ tag }}</a>
+                {% empty %}
+                <span style="margin-left: 15px;">No tags found.</span>
+                {% endfor %}
+            </div>
+        </div>
+    </aside>
+</div>

@@ -21,27 +21,18 @@ class PostDetailTest(TestCase):
                                         content='content')
 
         self.post.authors.create(username='john', first_name='John', last_name='Doe')
-        c = self.post.categories.create(title='Category1')
+        self.category = self.post.categories.create(title='Programming 2', slug='programming')
         t = self.post.tags.create(title='Tag1')
         t2 = self.post.tags.create(title='Tag2')
 
         self.categories = [
-            c,
-            Category.objects.create(title='Category2'),
-            Category.objects.create(title='Category3'),
-            Category.objects.create(title='Category4'),
-            Category.objects.create(title='Category5'),
-            Category.objects.create(title='Category6'),
-            Category.objects.create(title='Category7'),
-            Category.objects.create(title='Category8'),
+            self.category,
+            Category.objects.create(title='Category2', slug='category2'),
         ]
 
         self.tags = [
             t,
             t2,
-            Tag.objects.create(title='Tag3'),
-            Tag.objects.create(title='Tag4'),
-            Tag.objects.create(title='Tag5'),
         ]
 
         self.resp = self.client.get(r('post-detail', slug='title'))
@@ -64,7 +55,7 @@ class PostDetailTest(TestCase):
             'Title',
             'content',
             'John Doe',
-            'Category1',
+            'Programming 2',
             date.lower(),
         ]
 
@@ -97,6 +88,15 @@ class PostDetailTest(TestCase):
     def test_search_form(self):
         """Should have a form with a search field and action to /blog"""
         self.assertContains(self.resp, 'action="/blog"')
+
+    def test_categories_link(self):
+        for category in self.categories:
+            with self.subTest():
+                self.assertContains(self.resp, category.get_absolute_url())
+
+    def test_category_post_link(self):
+        """Should have a link for each category in post"""
+        self.assertContains(self.resp, self.category.get_absolute_url(), 2)
 
 
 class PostNotFoundTest(TestCase):

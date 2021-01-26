@@ -8,6 +8,7 @@ from blog.core.managers import CategoryManager, TagManager, PostManager
 
 class Category(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = CategoryManager()
@@ -17,6 +18,9 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return r('posts-by-category', self.slug)
 
 
 class Tag(models.Model):

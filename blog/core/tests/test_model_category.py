@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
 from blog.core.managers import CategoryManager
@@ -8,7 +9,8 @@ from blog.core.models import Category, Post
 
 class ModelCategoriesTest(TestCase):
     def setUp(self):
-        self.obj = Category.objects.create(title='Category1')
+        self.obj = Category.objects.create(title='Category1',
+                                           slug='category1')
 
     def test_create(self):
         self.assertTrue(Category.objects.exists())
@@ -18,6 +20,9 @@ class ModelCategoriesTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Category1', str(self.obj))
+
+    def test_get_absolute_url(self):
+        self.assertEqual(self.obj.get_absolute_url(), r('posts-by-category', self.obj.slug))
 
 
 class CategoryManagerTest(TestCase):

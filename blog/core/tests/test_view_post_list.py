@@ -16,27 +16,20 @@ class BlogPostListTest(TestCase):
         Post.objects.create(title='Title',
                             slug='title2',
                             content='Content')
-        Post.objects.create(title='Title3',
-                            slug='title3',
-                            content='Content')
+        obj = Post.objects.create(title='Title3',
+                                  slug='title3',
+                                  content='Content')
+
+        self.category = obj.categories.create(title='Category1', slug='category1')
 
         self.categories = [
-            Category.objects.create(title='Category1'),
-            Category.objects.create(title='Category2'),
-            Category.objects.create(title='Category3'),
-            Category.objects.create(title='Category4'),
-            Category.objects.create(title='Category5'),
-            Category.objects.create(title='Category6'),
-            Category.objects.create(title='Category7'),
-            Category.objects.create(title='Category8'),
+            self.category,
+            Category.objects.create(title='Category2', slug='category2'),
         ]
 
         self.tags = [
             Tag.objects.create(title='Tag1'),
             Tag.objects.create(title='Tag2'),
-            Tag.objects.create(title='Tag3'),
-            Tag.objects.create(title='Tag4'),
-            Tag.objects.create(title='Tag5'),
         ]
 
         self.resp = self.client.get(r('blog'))
@@ -78,6 +71,15 @@ class BlogPostListTest(TestCase):
         for tag in self.tags:
             with self.subTest():
                 self.assertContains(self.resp, str(tag))
+
+    def test_categories_link(self):
+        for category in self.categories:
+            with self.subTest():
+                self.assertContains(self.resp, category.get_absolute_url())
+
+    def test_category_of_post_link(self):
+        """Should have a link for each category in post"""
+        self.assertContains(self.resp, self.category.get_absolute_url(), 2)
 
 
 class SearchTest(TestCase):

@@ -16,17 +16,15 @@ def post_list(request):
     else:
         posts = Post.objects.all()
 
-    paginator = Paginator(posts, 3)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
+    page_obj = _post_list_paginator(request, posts)
 
-    categories, tags = get_sidebar_categories_and_tags()
+    categories, tags = _get_sidebar_categories_and_tags()
     return render(request, 'core/post_list.html', {'page_obj': page_obj,  'categories': categories, 'tags': tags})
 
 
 def post_detail(request, slug):
     post = get_object_or_404(Post, slug=slug)
-    categories, tags = get_sidebar_categories_and_tags()
+    categories, tags = _get_sidebar_categories_and_tags()
 
     previous = Post.objects.previous(post)
     next_ = Post.objects.next(post)
@@ -35,5 +33,20 @@ def post_detail(request, slug):
                                                      'previous': previous, 'next': next_})
 
 
-def get_sidebar_categories_and_tags():
+def posts_by_category(request, slug):
+    category = get_object_or_404(Category, slug=slug)
+    posts = category.post_set.all()
+    page_obj = _post_list_paginator(request, posts)
+
+    categories, tags = _get_sidebar_categories_and_tags()
+    return render(request, 'core/post_list.html', {'page_obj': page_obj, 'categories': categories, 'tags': tags})
+
+
+def _get_sidebar_categories_and_tags():
     return Category.objects.top_eight(), Tag.objects.top_five()
+
+
+def _post_list_paginator(request, posts):
+    paginator = Paginator(posts, 3)
+    page_number = request.GET.get('page')
+    return paginator.get_page(page_number)

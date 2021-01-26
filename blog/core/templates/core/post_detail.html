@@ -44,7 +44,7 @@
                  <time class="date" datetime="2014-01-14T11:24">{{ post.created_at|date:'b d, Y' }}</time>
                 <span class="categories">
                   {% for category in post.categories.all %}
-                  / {{ category }}
+                    / <a href="{{ category.get_absolute_url }}">{{ category }}</a>
                   {% endfor %}
                 </span>
 
@@ -92,40 +92,7 @@
 
      </div>
 
-     <div id="secondary" class="four columns end">
-
-        <aside id="sidebar">
-
-           <div class="widget widget_search">
-              <h5>Search</h5>
-              <form action="{% url 'blog' %}">
-                 <input class="text-search" name="q" type="text" onfocus="if (this.value == 'Search here...') { this.value = ''; }" onblur="if(this.value == '') { this.value = 'Search here...'; }" value="Search here...">
-                 <input type="submit" class="submit-search" value="">
-              </form>
-           </div>
-
-           <div class="widget widget_categories">
-              <h5 class="widget-title">Categories</h5>
-              <ul class="link-list cf">
-              <ul class="link-list cf">
-                  {% for category in categories %}
-                    <li>{{ category }}</li>
-                  {% endfor %}
-              </ul>
-           </div>
-
-           <div class="widget widget_tag_cloud">
-              <h5 class="widget-title">Tags</h5>
-              <div class="tagcloud cf">
-                  {% for tag in tags %}
-                    <a href="#">{{ tag }}</a>
-                  {% endfor %}
-              </div>
-           </div>
-
-        </aside> <!-- Sidebar End -->
-
-     </div> <!-- Comments End -->
+     {% include 'core/snippet_sidebar_blog.html' with categories=categories tags=tags only %}
 
   </div>
 
