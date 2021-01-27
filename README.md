@@ -2,7 +2,7 @@
 
 A blog build with Django!
 
-[![Build Status](https://travis-ci.com/nickolasaperes/blog-sparrow.svg?branch=master)](https://travis-ci.com/nickolasaperes/blog-sparrow)
+[![Build Status](https://travis-ci.com/nickolasaperes/blog-sparrow.svg?branch=master)](https://travis-ci.com/nickolasaperes/blog-sparrow) &nbsp; [![Coverage Status](https://coveralls.io/repos/github/nickolasaperes/blog-sparrow/badge.svg?branch=master)](https://coveralls.io/github/nickolasaperes/blog-sparrow?branch=master)
 
 ## Quick Start
 
