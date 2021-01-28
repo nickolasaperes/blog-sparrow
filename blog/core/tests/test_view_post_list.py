@@ -21,15 +21,14 @@ class BlogPostListTest(TestCase):
                                   content='Content')
 
         self.category = obj.categories.create(title='Category1', slug='category1')
-
         self.categories = [
             self.category,
             Category.objects.create(title='Category2', slug='category2'),
         ]
 
         self.tags = [
-            Tag.objects.create(title='Tag1'),
-            Tag.objects.create(title='Tag2'),
+            Tag.objects.create(title='Tag1', slug='tag1'),
+            Tag.objects.create(title='Tag2', slug='tag2'),
         ]
 
         self.resp = self.client.get(r('blog'))
@@ -77,9 +76,15 @@ class BlogPostListTest(TestCase):
             with self.subTest():
                 self.assertContains(self.resp, category.get_absolute_url())
 
-    def test_category_of_post_link(self):
+    def test_link_category_of_post(self):
         """Should have a link for each category in post"""
         self.assertContains(self.resp, self.category.get_absolute_url(), 2)
+
+    def test_tags_links(self):
+        """Should have link of tags in sidebar"""
+        for tag in self.tags:
+            with self.subTest():
+                self.assertContains(self.resp, tag.get_absolute_url())
 
 
 class SearchTest(TestCase):

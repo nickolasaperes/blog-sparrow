@@ -22,8 +22,8 @@ class PostDetailTest(TestCase):
 
         self.post.authors.create(username='john', first_name='John', last_name='Doe')
         self.category = self.post.categories.create(title='Programming 2', slug='programming')
-        t = self.post.tags.create(title='Tag1')
-        t2 = self.post.tags.create(title='Tag2')
+        t = self.post.tags.create(title='Tag1', slug='tag1')
+        t2 = self.post.tags.create(title='Tag2', slug='tag2')
 
         self.categories = [
             self.category,
@@ -63,10 +63,6 @@ class PostDetailTest(TestCase):
             with self.subTest():
                 self.assertContains(self.resp, expected)
 
-    def test_tags(self):
-        expected = ', '.join(map(lambda x: str(x), self.post.tags.all()))
-        self.assertContains(self.resp, expected)
-
     def test_sidebar_categories(self):
         """Should show top 8 categories(categories with more posts) in view"""
         for expected in self.categories:
@@ -97,6 +93,12 @@ class PostDetailTest(TestCase):
     def test_category_post_link(self):
         """Should have a link for each category in post"""
         self.assertContains(self.resp, self.category.get_absolute_url(), 2)
+
+    def test_tags_links(self):
+        """Should have a link for each tag in post"""
+        for tag in self.tags:
+            with self.subTest():
+                self.assertContains(self.resp, tag.get_absolute_url(), 2)
 
 
 class PostNotFoundTest(TestCase):

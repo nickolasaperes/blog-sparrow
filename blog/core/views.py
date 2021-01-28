@@ -42,6 +42,15 @@ def posts_by_category(request, slug):
     return render(request, 'core/post_list.html', {'page_obj': page_obj, 'categories': categories, 'tags': tags})
 
 
+def posts_by_tag(request, slug):
+    tag = get_object_or_404(Tag, slug=slug)
+    posts = tag.post_set.all()
+    page_obj = _post_list_paginator(request, posts)
+
+    categories, tags = _get_sidebar_categories_and_tags()
+    return render(request, 'core/post_list.html', {'page_obj': page_obj, 'categories': categories, 'tags': tags})
+
+
 def _get_sidebar_categories_and_tags():
     return Category.objects.top_eight(), Tag.objects.top_five()
 

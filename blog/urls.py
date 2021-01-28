@@ -18,7 +18,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
-from blog.core.views import home, post_list, post_detail, posts_by_category
+from blog.core.views import home, post_list, post_detail, posts_by_category, posts_by_tag
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,6 +26,7 @@ urlpatterns = [
     path('blog', post_list, name='blog'),
     path('post/<slug:slug>', post_detail, name='post-detail'),
     path('category/<slug:slug>', posts_by_category, name='posts-by-category'),
+    path('tag/<slug:slug>', posts_by_tag, name='posts-by-tag'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

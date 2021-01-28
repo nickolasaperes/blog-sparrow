@@ -23,7 +23,7 @@
         <h5 class="widget-title">Tags</h5>
             <div class="tagcloud cf">
                 {% for tag in tags %}
-                <a href="#">{{ tag }}</a>
+                <a href="{{ tag.get_absolute_url }}">{{ tag }}</a>
                 {% empty %}
                 <span style="margin-left: 15px;">No tags found.</span>
                 {% endfor %}

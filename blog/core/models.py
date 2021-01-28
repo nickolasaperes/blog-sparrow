@@ -25,12 +25,16 @@ class Category(models.Model):
 
 class Tag(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     objects = TagManager()
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return r('posts-by-tag', self.slug)
 
 
 class Post(models.Model):

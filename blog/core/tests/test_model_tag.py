@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
 from blog.core.managers import TagManager
@@ -8,7 +9,7 @@ from blog.core.models import Tag, Post
 
 class ModelTagsTest(TestCase):
     def setUp(self):
-        self.obj = Tag.objects.create(title='Tag1')
+        self.obj = Tag.objects.create(title='Tag1', slug='tag1')
 
     def test_create(self):
         self.assertTrue(Tag.objects.exists())
@@ -18,6 +19,9 @@ class ModelTagsTest(TestCase):
 
     def test_str(self):
         self.assertEqual('Tag1', str(self.obj))
+
+    def test_get_absolute_url(self):
+        self.assertEqual(self.obj.get_absolute_url(), r('posts-by-tag', self.obj.slug))
 
 
 class TagManagerTest(TestCase):

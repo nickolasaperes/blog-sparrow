@@ -10,6 +10,10 @@ class CategoryModelAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
 
 
+class TagModelAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('title',)}
+
+
 admin.site.register(Post, PostModelAdmin)
 admin.site.register(Category, CategoryModelAdmin)
-admin.site.register(Tag)
+admin.site.register(Tag, TagModelAdmin)

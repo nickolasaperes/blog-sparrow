@@ -5,7 +5,7 @@ from blog.core.models import Tag, Post
 
 class ViewCategoryTest(TestCase):
     def setUp(self):
-        Tag.objects.create(title='Web Development')
+        Tag.objects.create(title='Web Development', slug='web-development')
         Post.objects.create(title='Post2',
                             content='Content2')
         self.post = Post.objects.create(title='Post',
