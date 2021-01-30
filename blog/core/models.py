@@ -20,7 +20,7 @@ class Category(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return r('posts-by-category', self.slug)
+        return '{}?category={}'.format(r('blog'), self.slug)
 
 
 class Tag(models.Model):
@@ -34,7 +34,7 @@ class Tag(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return r('posts-by-tag', self.slug)
+        return '{}?tag={}'.format(r('blog'), self.slug)
 
 
 class Post(models.Model):

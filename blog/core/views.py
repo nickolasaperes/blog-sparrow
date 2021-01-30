@@ -16,6 +16,16 @@ def post_list(request):
     else:
         posts = Post.objects.all()
 
+    category = request.GET.get('category')
+    if category:
+        category = get_object_or_404(Category, slug=category)
+        posts = posts.filter(categories=category)
+
+    tag = request.GET.get('tag')
+    if tag:
+        tag = get_object_or_404(Tag, slug=tag)
+        posts = posts.filter(tags=tag)
+
     page_obj = _post_list_paginator(request, posts)
 
     categories, tags = _get_sidebar_categories_and_tags()
@@ -31,24 +41,6 @@ def post_detail(request, slug):
 
     return render(request, 'core/post_detail.html', {'post': post, 'categories': categories, 'tags': tags,
                                                      'previous': previous, 'next': next_})
-
-
-def posts_by_category(request, slug):
-    category = get_object_or_404(Category, slug=slug)
-    posts = category.post_set.all()
-    page_obj = _post_list_paginator(request, posts)
-
-    categories, tags = _get_sidebar_categories_and_tags()
-    return render(request, 'core/post_list.html', {'page_obj': page_obj, 'categories': categories, 'tags': tags})
-
-
-def posts_by_tag(request, slug):
-    tag = get_object_or_404(Tag, slug=slug)
-    posts = tag.post_set.all()
-    page_obj = _post_list_paginator(request, posts)
-
-    categories, tags = _get_sidebar_categories_and_tags()
-    return render(request, 'core/post_list.html', {'page_obj': page_obj, 'categories': categories, 'tags': tags})
 
 
 def _get_sidebar_categories_and_tags():

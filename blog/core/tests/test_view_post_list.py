@@ -89,17 +89,39 @@ class BlogPostListTest(TestCase):
 
 class SearchTest(TestCase):
     def setUp(self):
-        Post.objects.create(title='Title',
-                            slug='title',
-                            content='Content')
-        Post.objects.create(title='Title2',
-                            slug='title2',
-                            content='Content')
+        self.post2 = Post.objects.create(title='Tutorial Post', slug='post', content='Post!!')
+        self.post = Post.objects.create(title='Tutorial Django', slug='tutorial', content='test')
 
-        self.resp = self.client.get(r('blog'), {'q': 'Title2'})
+        self.post.categories.create(title='Web', slug='web')
+        self.post.tags.create(title='Django', slug='django')
 
-    def test_search(self):
-        self.assertQuerysetEqual(self.resp.context['page_obj'], ['Title2'], lambda x: x.title)
+        self.resp = self.client.get(r('blog'), {'q': 'Django'})
+
+    def test_simple_search(self):
+        self.assertQuerysetEqual(self.resp.context['page_obj'], ['Tutorial Django'], lambda x: x.title)
 
     def test_persistent_query(self):
-        self.assertQuerysetEqual(self.resp.context['page_obj'].paginator.get_page(2), ['Title2'], lambda x: x.title)
+        """Should maintain the search if user click in another page"""
+        self.assertQuerysetEqual(self.resp.context['page_obj'].paginator.get_page(2), ['Tutorial Django'], lambda x: x.title)
+
+    def test_category_search(self):
+        """Should filter posts by category"""
+        resp = self.client.get(r('blog'), {'q': 'Tutorial', 'category': 'web'})
+        self.assertQuerysetEqual(resp.context['page_obj'], ['Tutorial Django'], lambda x: x.title)
+
+    def test_tag_search(self):
+        """Should filter posts by tag"""
+        resp = self.client.get(r('blog'), {'q': 'Tutorial', 'tag': 'django'})
+        self.assertQuerysetEqual(resp.context['page_obj'], ['Tutorial Django'], lambda x: x.title)
+
+
+class SearchNotFound(TestCase):
+    def test_not_found_category(self):
+        """Should return 404 if category does not exist"""
+        resp = self.client.get(r('blog'), {'category': 'not-found'})
+        self.assertEqual(resp.status_code, 404)
+
+    def test_not_found_tag(self):
+        """Should return 404 if tag does not exist"""
+        resp = self.client.get(r('blog'), {'tag': 'not-found'})
+        self.assertEqual(resp.status_code, 404)
