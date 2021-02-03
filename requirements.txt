@@ -17,3 +17,4 @@ Pygments==1.6
 requests==2.25.1
 sqlparse==0.3.1
 urllib3==1.26.3
+django-test-without-migrations==0.6
