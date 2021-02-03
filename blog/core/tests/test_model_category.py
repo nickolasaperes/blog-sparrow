@@ -22,7 +22,7 @@ class ModelCategoriesTest(TestCase):
         self.assertEqual('Category1', str(self.obj))
 
     def test_get_absolute_url(self):
-        self.assertEqual(self.obj.get_absolute_url(), r('posts-by-category', self.obj.slug))
+        self.assertEqual(self.obj.get_absolute_url(), r('blog') + '?category=' + self.obj.slug)
 
 
 class CategoryManagerTest(TestCase):

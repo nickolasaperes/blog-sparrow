@@ -1,6 +1,30 @@
 from django.test import TestCase
-from blog.core.admin import PostModelAdmin, CategoryModelAdmin, TagModelAdmin
-from blog.core.forms import PostAdminForm, CategoryAdminForm, TagAdminForm
+
+from blog.core.admin import PostModelAdmin, CategoryModelAdmin, TagModelAdmin, UserModelAdmin
+from blog.core.forms import UserCreationAdminForm
+from django.contrib.auth.admin import UserAdmin
+
+
+class UserModelAdminTest(TestCase):
+    def test_form(self):
+        self.assertEqual(UserModelAdmin.add_form, UserCreationAdminForm)
+
+    def test_fieldsets(self):
+        """Should have blog custom columns separated in fieldsets"""
+        expected = (
+            *UserAdmin.fieldsets,
+            (
+                'Blog',
+                {
+                    'fields': (
+                        'bio',
+                        'birth_date',
+                        'profile',
+                    )
+                }
+            )
+        )
+        self.assertEqual(UserModelAdmin.fieldsets, expected)
 
 
 class PostModelAdminTest(TestCase):

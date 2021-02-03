@@ -21,7 +21,7 @@ class ModelTagsTest(TestCase):
         self.assertEqual('Tag1', str(self.obj))
 
     def test_get_absolute_url(self):
-        self.assertEqual(self.obj.get_absolute_url(), r('posts-by-tag', self.obj.slug))
+        self.assertEqual(self.obj.get_absolute_url(), r('blog') + '?tag=' + self.obj.slug)
 
 
 class TagManagerTest(TestCase):

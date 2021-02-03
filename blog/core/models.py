@@ -1,9 +1,15 @@
 from ckeditor.fields import RichTextField
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.shortcuts import resolve_url as r
 
 from blog.core.managers import CategoryManager, TagManager, PostManager
+
+
+class User(AbstractUser):
+    bio = models.TextField(max_length=300)
+    birth_date = models.DateField(null=True, blank=True)
+    profile = models.ImageField(null=True, blank=True)
 
 
 class Category(models.Model):
@@ -20,7 +26,7 @@ class Category(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return r('posts-by-category', self.slug)
+        return '{}?category={}'.format(r('blog'), self.slug)
 
 
 class Tag(models.Model):
@@ -34,7 +40,7 @@ class Tag(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return r('posts-by-tag', self.slug)
+        return '{}?tag={}'.format(r('blog'), self.slug)
 
 
 class Post(models.Model):

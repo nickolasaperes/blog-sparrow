@@ -41,7 +41,7 @@
 
               <p class="post-meta">
 
-                 <time class="date" datetime="2014-01-14T11:24">{{ post.created_at|date:'b d, Y' }}</time>
+                 <time class="date" datetime="">{{ post.created_at|date:'b d, Y' }}</time>
                 <span class="categories">
                   {% for category in post.categories.all %}
                     / <a href="{{ category.get_absolute_url }}">{{ category }}</a>
@@ -72,11 +72,14 @@
 
                 {% for author in post.authors.all %}
                 <div class="bio cf">
+                    {% if author.profile %}
                     <div class="gravatar">
-                        <img src="images/author-img.png" alt="">
+                        <img src="{{ author.profile.url }}" alt="">
                     </div>
+                    {% endif %}
                     <div class="about">
                         <h5><a title="Posts by {{ author.first_name }} {{ author.last_name }}" href="#" rel="author">{{ author.first_name }} {{ author.last_name }}</a></h5>
+                        <p>{{ author.bio }}</p>
                     </div>
                 </div>
                 {% endfor %}

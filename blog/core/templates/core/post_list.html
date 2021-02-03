@@ -73,19 +73,19 @@
               <ul>
                  {% if page_obj.has_previous %}
                  <li>
-                     <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-numbers">&laquo; First</a>
+                     <a href="?page=1{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.tag%}&tag={{ request.GET.tag }}{% endif %}" class="page-numbers">&laquo; First</a>
                  </li>
                  {% endif %}
 
                  {% for page in page_obj.paginator.page_range %}
                  <li>
-                     <a href="?page={{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-numbers {% if page == page_obj.number %} current{% endif %}">{{ page }}</a>
+                     <a href="?page={{ page }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.tag%}&tag={{ request.GET.tag }}{% endif %}" class="page-numbers {% if page == page_obj.number %} current{% endif %}">{{ page }}</a>
                  </li>
                  {% endfor %}
 
                   {% if page_obj.has_next %}
                   <li>
-                      <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="page-numbers">Last &raquo;</a>
+                      <a href="?page={{ page_obj.paginator.num_pages }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}{% if request.GET.tag%}&tag={{ request.GET.tag }}{% endif %}" class="page-numbers">Last &raquo;</a>
                   </li>
                   {% endif %}
               </ul>

@@ -1,5 +1,12 @@
 from django import forms
-from blog.core.models import Post, Category, Tag
+from django.contrib.auth.forms import UserCreationForm
+from blog.core.models import Post, Category, Tag, User
+
+
+class UserCreationAdminForm(UserCreationForm):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 
 class BaseAdminForm:

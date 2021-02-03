@@ -3,9 +3,7 @@ from datetime import datetime
 from django.shortcuts import resolve_url as r
 from django.test import TestCase
 
-from blog.core.models import Post
-
-from django.contrib.auth.models import User
+from blog.core.models import Post, User
 
 
 class HomeTest(TestCase):
