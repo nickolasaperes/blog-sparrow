@@ -20,13 +20,13 @@ class Category(models.Model):
     objects = CategoryManager()
 
     class Meta:
-        verbose_name_plural = 'Categories'
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return '{}?category={}'.format(r('blog'), self.slug)
+        return "{}?category={}".format(r("blog"), self.slug)
 
 
 class Tag(models.Model):
@@ -40,7 +40,7 @@ class Tag(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return '{}?tag={}'.format(r('blog'), self.slug)
+        return "{}?tag={}".format(r("blog"), self.slug)
 
 
 class Post(models.Model):
@@ -50,16 +50,16 @@ class Post(models.Model):
     thumb = models.ImageField()
     content = RichTextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    categories = models.ManyToManyField('Category')
-    tags = models.ManyToManyField('Tag')
+    categories = models.ManyToManyField("Category")
+    tags = models.ManyToManyField("Tag")
 
     objects = PostManager()
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return r('post-detail', slug=self.slug)
+        return r("post-detail", slug=self.slug)

@@ -21,12 +21,13 @@ from django.urls import path, include
 from blog.core.views import home, post_list, post_detail
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', home, name='home'),
-    path('blog', post_list, name='blog'),
-    path('post/<slug:slug>', post_detail, name='post-detail'),
+    path("admin/", admin.site.urls),
+    path("", home, name="home"),
+    path("blog", post_list, name="blog"),
+    path("post/<slug:slug>", post_detail, name="post-detail"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     import debug_toolbar
-    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
+
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]

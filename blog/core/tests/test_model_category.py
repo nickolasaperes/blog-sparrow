@@ -9,8 +9,7 @@ from blog.core.models import Category, Post
 
 class ModelCategoriesTest(TestCase):
     def setUp(self):
-        self.obj = Category.objects.create(title='Category1',
-                                           slug='category1')
+        self.obj = Category.objects.create(title="Category1", slug="category1")
 
     def test_create(self):
         self.assertTrue(Category.objects.exists())
@@ -19,34 +18,32 @@ class ModelCategoriesTest(TestCase):
         self.assertIsInstance(self.obj.created_at, datetime)
 
     def test_str(self):
-        self.assertEqual('Category1', str(self.obj))
+        self.assertEqual("Category1", str(self.obj))
 
     def test_get_absolute_url(self):
-        self.assertEqual(self.obj.get_absolute_url(), r('blog') + '?category=' + self.obj.slug)
+        self.assertEqual(
+            self.obj.get_absolute_url(), r("blog") + "?category=" + self.obj.slug
+        )
 
 
 class CategoryManagerTest(TestCase):
     def setUp(self):
-        self.first_category = Category.objects.create(title='First')
+        self.first_category = Category.objects.create(title="First")
         self.categories = [
-            Category.objects.create(title='Designs'),
-            Category.objects.create(title='Internet'),
-            Category.objects.create(title='Typography'),
-            Category.objects.create(title='Photography'),
-            Category.objects.create(title='Web Development'),
-            Category.objects.create(title='Projects'),
-            Category.objects.create(title='Other Stuff'),
-            Category.objects.create(title='Animation'),
-            Category.objects.create(title='Not Show')
+            Category.objects.create(title="Designs"),
+            Category.objects.create(title="Internet"),
+            Category.objects.create(title="Typography"),
+            Category.objects.create(title="Photography"),
+            Category.objects.create(title="Web Development"),
+            Category.objects.create(title="Projects"),
+            Category.objects.create(title="Other Stuff"),
+            Category.objects.create(title="Animation"),
+            Category.objects.create(title="Not Show"),
         ]
 
-        post1 = Post.objects.create(title='Title',
-                                    slug='slug',
-                                    content='Content')
+        post1 = Post.objects.create(title="Title", slug="slug", content="Content")
 
-        post2 = Post.objects.create(title='Title',
-                                    slug='slug2',
-                                    content='Content')
+        post2 = Post.objects.create(title="Title", slug="slug2", content="Content")
 
         post1.categories.set(self.categories)
         post1.categories.add(self.first_category)

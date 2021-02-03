@@ -1,6 +1,11 @@
 from django.contrib import admin
 from blog.core.models import Post, Category, Tag, User
-from blog.core.forms import PostAdminForm, CategoryAdminForm, TagAdminForm, UserCreationAdminForm
+from blog.core.forms import (
+    PostAdminForm,
+    CategoryAdminForm,
+    TagAdminForm,
+    UserCreationAdminForm,
+)
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -11,31 +16,31 @@ class UserModelAdmin(UserAdmin):
     fieldsets = (
         *UserAdmin.fieldsets,
         (
-            'Blog',
+            "Blog",
             {
-                'fields': (
-                    'bio',
-                    'birth_date',
-                    'profile',
+                "fields": (
+                    "bio",
+                    "birth_date",
+                    "profile",
                 )
-            }
-        )
+            },
+        ),
     )
 
 
 class PostModelAdmin(admin.ModelAdmin):
     form = PostAdminForm
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class CategoryModelAdmin(admin.ModelAdmin):
     form = CategoryAdminForm
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {"slug": ("title",)}
 
 
 class TagModelAdmin(admin.ModelAdmin):
     form = TagAdminForm
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {"slug": ("title",)}
 
 
 admin.site.register(User, UserModelAdmin)

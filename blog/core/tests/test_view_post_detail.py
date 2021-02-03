@@ -11,31 +11,38 @@ from blog.core.models import Post, Category
 
 class PostDetailTest(TestCase):
     def setUp(self):
-        self.previous = Post.objects.create(title='Title2',
-                                            slug='title2',
-                                            content='content')
+        self.previous = Post.objects.create(
+            title="Title2", slug="title2", content="content"
+        )
 
-        self.post = Post.objects.create(title='Title',
-                                        slug='title',
-                                        content='content')
+        self.post = Post.objects.create(title="Title", slug="title", content="content")
 
-        self.next = Post.objects.create(title='Title3',
-                                        slug='title3',
-                                        content='content')
+        self.next = Post.objects.create(
+            title="Title3", slug="title3", content="content"
+        )
 
-        self.profile = SimpleUploadedFile(name='author-img.png',
-                                          content=open('blog/core/static/images/author-img.png', 'rb').read(),
-                                          content_type='image/jpeg')
+        self.profile = SimpleUploadedFile(
+            name="author-img.png",
+            content=open("blog/core/static/images/author-img.png", "rb").read(),
+            content_type="image/jpeg",
+        )
 
-        self.author = self.post.authors.create(username='john', first_name='John', last_name='Doe', bio='Web Developer',
-                                               profile=self.profile)
-        self.category = self.post.categories.create(title='Programming 2', slug='programming')
-        t = self.post.tags.create(title='Tag1', slug='tag1')
-        t2 = self.post.tags.create(title='Tag2', slug='tag2')
+        self.author = self.post.authors.create(
+            username="john",
+            first_name="John",
+            last_name="Doe",
+            bio="Web Developer",
+            profile=self.profile,
+        )
+        self.category = self.post.categories.create(
+            title="Programming 2", slug="programming"
+        )
+        t = self.post.tags.create(title="Tag1", slug="tag1")
+        t2 = self.post.tags.create(title="Tag2", slug="tag2")
 
         self.categories = [
             self.category,
-            Category.objects.create(title='Category2', slug='category2'),
+            Category.objects.create(title="Category2", slug="category2"),
         ]
 
         self.tags = [
@@ -43,32 +50,32 @@ class PostDetailTest(TestCase):
             t2,
         ]
 
-        self.resp = self.client.get(r('post-detail', slug='title'))
+        self.resp = self.client.get(r("post-detail", slug="title"))
 
     def tearDown(self):
-        os.remove(settings.MEDIA_ROOT + '/' + str(self.author.profile))
+        os.remove(settings.MEDIA_ROOT + "/" + str(self.author.profile))
 
     def test_get(self):
         self.assertEqual(self.resp.status_code, 200)
 
     def test_template(self):
-        self.assertTemplateUsed(self.resp, 'core/post_detail.html')
+        self.assertTemplateUsed(self.resp, "core/post_detail.html")
 
     def test_context(self):
-        keys = ['post', 'categories', 'tags', 'previous', 'next']
+        keys = ["post", "categories", "tags", "previous", "next"]
         for expected in keys:
             self.assertIn(expected, self.resp.context)
 
     def test_html(self):
         date = datetime.utcnow()
-        date = date.strftime('%b %d, %Y')
+        date = date.strftime("%b %d, %Y")
         contents = [
-            'Title',
-            'content',
-            'John Doe',
-            'Programming 2',
+            "Title",
+            "content",
+            "John Doe",
+            "Programming 2",
             date.lower(),
-            'Web Developer',
+            "Web Developer",
         ]
 
         for expected in contents:
@@ -122,5 +129,5 @@ class PostDetailTest(TestCase):
 class PostNotFoundTest(TestCase):
     def test_not_found(self):
         """Should return 404 when raises post DoesNotExist"""
-        resp = self.client.get(r('post-detail', slug='not-found'))
+        resp = self.client.get(r("post-detail", slug="not-found"))
         self.assertEqual(resp.status_code, 404)
