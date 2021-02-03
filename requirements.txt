@@ -12,6 +12,10 @@ django-test-without-migrations==0.6
 Pillow==8.1.0
 python-decouple==3.3
 pytz==2020.5
-sqlparse==0.4.1
 static3==0.7.0
 django-debug-toolbar==3.2
+Pygments==1.6
+requests==2.25.1
+sqlparse==0.3.1
+urllib3==1.26.3
+sqlformatter==1.4
