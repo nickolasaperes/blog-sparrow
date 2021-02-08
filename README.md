@@ -31,6 +31,7 @@ python manage.py test
 2. Send the settings to the app.
 3. Define a secure SECRET_KEY for the instance.
 4. Define DEBUG=False
+5. Create a Sentry project and set the DNS URL, SENTRY_DNS=YOUR_SENTRY_URL
 5. Push the code to heroku.
 
 ```console
